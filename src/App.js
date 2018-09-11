@@ -6,7 +6,28 @@ import List from "./components/List";
 
 
 class App extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            items : [
+                {
+                    name : "Abc",
+                    level : 0 // 0 small, 1 medium, 2 high
+                },
+                {
+                    name : "Def",
+                    level : 1 // 0 small, 1 medium, 2 high
+                },
+                {
+                    name : "Ghj",
+                    level : 2 // 0 small, 1 medium, 2 high
+                }
+            ]
+        };
+    }
     render() {
+       // console.log(this.state.items);
+        let items = this.state.items;
         return (
             <div>
                 <div>
@@ -20,7 +41,7 @@ class App extends Component {
                     <Form/>
                     {/* FORM : END */}
                     {/* LIST : START */}
-                    <List/>
+                    <List items = {items} />
                     {/* LIST : END */}
                 </div>
 
