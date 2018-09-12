@@ -9,12 +9,22 @@ class App extends Component {
     constructor(props){
         super(props);
         this.state = {
-            items: tasks
+            items: tasks,
+            isShowForm: false
         };
+        this.handleToggleForm = this.handleToggleForm.bind(this);
     }
+    handleToggleForm(){
+        this.setState({isShowForm: !this.state.isShowForm});
+        }
     render() {
         //console.log(this.state.items);
         let items = this.state.items;
+        let elmForm = null;
+        if(this.state.isShowForm){
+            elmForm = <Form/>
+        }
+
         return (
             <div>
                 <div>
@@ -22,10 +32,10 @@ class App extends Component {
                     <Title/>
                     {/* TITLE : END */}
                     {/* CONTROL (SEARCH + SORT + ADD) : START */}
-                    <Control/>
+                    <Control onClickAdd={this.handleToggleForm}/>
                     {/* CONTROL (SEARCH + SORT + ADD) : END */}
                     {/* FORM : START */}
-                    <Form/>
+                    {elmForm}
                     {/* FORM : END */}
                     {/* LIST : START */}
                     <List items = {items}/>
