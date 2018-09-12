@@ -3,30 +3,17 @@ import Title from "./components/Title";
 import Control from "./components/Control";
 import Form from "./components/Form";
 import List from "./components/List";
-
+import tasks from "./mocks/tasks";
 
 class App extends Component {
     constructor(props){
         super(props);
         this.state = {
-            items : [
-                {
-                    name : "Abc",
-                    level : 0 // 0 small, 1 medium, 2 high
-                },
-                {
-                    name : "Def",
-                    level : 1 // 0 small, 1 medium, 2 high
-                },
-                {
-                    name : "Ghj",
-                    level : 2 // 0 small, 1 medium, 2 high
-                }
-            ]
+            items: tasks
         };
     }
     render() {
-       // console.log(this.state.items);
+        //console.log(this.state.items);
         let items = this.state.items;
         return (
             <div>
@@ -41,7 +28,7 @@ class App extends Component {
                     <Form/>
                     {/* FORM : END */}
                     {/* LIST : START */}
-                    <List items = {items} />
+                    <List items = {items}/>
                     {/* LIST : END */}
                 </div>
 

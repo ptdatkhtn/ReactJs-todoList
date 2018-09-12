@@ -10,9 +10,10 @@ class List extends Component {
     }
     render() {
         const items = this.props.items;
-        const elmItem = items.map((items, index)=>{
+        //console.log(items);
+        const elmItem = items.map((item, index)=>{
             return (
-                <Item key={index}/>
+                <Item key={index} item = {item} index = {index}/>
             )
         })
         return (
