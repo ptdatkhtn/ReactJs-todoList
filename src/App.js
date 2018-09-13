@@ -10,19 +10,43 @@ class App extends Component {
         super(props);
         this.state = {
             items: tasks,
-            isShowForm: false
+            isShowForm: false,
+            strSearch: ''
         };
         this.handleToggleForm = this.handleToggleForm.bind(this);
+        this.closeForm = this.closeForm.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
     }
+
     handleToggleForm(){
         this.setState({isShowForm: !this.state.isShowForm});
-        }
+    }
+
+    closeForm(){
+        this.setState({isShowForm: false});
+    }
+
+    handleSearch(value){
+        this.setState({strSearch: value});
+    }
     render() {
         //console.log(this.state.items);
-        let items = this.state.items;
+        //console.log(this.state.strSearch);
+        let itemsOrigin = this.state.items;
+        let items = [];
         let elmForm = null;
+        let search = this.state.strSearch;
         if(this.state.isShowForm){
-            elmForm = <Form/>
+            elmForm = <Form onClickCancel = {this.closeForm}/>
+        }
+
+        if(search.length > 0){
+            itemsOrigin.forEach((item) => {
+                if(item.name.toLowerCase().indexOf(search) !== -1)
+                    items.push(item);
+            })
+        }else{
+            items = itemsOrigin;
         }
 
         return (
@@ -32,7 +56,11 @@ class App extends Component {
                     <Title/>
                     {/* TITLE : END */}
                     {/* CONTROL (SEARCH + SORT + ADD) : START */}
-                    <Control onClickAdd={this.handleToggleForm}/>
+                    <Control
+                        onClickAdd={this.handleToggleForm}
+                        isShowForm={this.state.isShowForm}
+                        onClickSearchGo={this.handleSearch}
+                    />
                     {/* CONTROL (SEARCH + SORT + ADD) : END */}
                     {/* FORM : START */}
                     {elmForm}
