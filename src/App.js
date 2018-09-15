@@ -4,6 +4,7 @@ import Control from "./components/Control";
 import Form from "./components/Form";
 import List from "./components/List";
 import tasks from "./mocks/tasks";
+import {filter, includes} from "lodash";
 
 class App extends Component {
     constructor(props){
@@ -32,7 +33,7 @@ class App extends Component {
     render() {
         //console.log(this.state.items);
         //console.log(this.state.strSearch);
-        let itemsOrigin = this.state.items;
+        let itemsOrigin = [...this.state.items];
         let items = [];
         let elmForm = null;
         let search = this.state.strSearch;
@@ -40,6 +41,7 @@ class App extends Component {
             elmForm = <Form onClickCancel = {this.closeForm}/>
         }
 
+        /*
         if(search.length > 0){
             itemsOrigin.forEach((item) => {
                 if(item.name.toLowerCase().indexOf(search) !== -1)
@@ -48,6 +50,11 @@ class App extends Component {
         }else{
             items = itemsOrigin;
         }
+        */
+
+        items = filter(itemsOrigin, (item) => {
+            return includes(item.name, search);
+        })
 
         return (
             <div>
