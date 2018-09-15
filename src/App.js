@@ -4,7 +4,7 @@ import Control from "./components/Control";
 import Form from "./components/Form";
 import List from "./components/List";
 import tasks from "./mocks/tasks";
-import {filter, includes} from "lodash";
+import {filter, includes, orderBy as funcOrderBy} from "lodash";
 
 class App extends Component {
     constructor(props){
@@ -12,11 +12,14 @@ class App extends Component {
         this.state = {
             items: tasks,
             isShowForm: false,
-            strSearch: ''
+            strSearch: '',
+            orderBy: 'name',
+            orderDir: 'asc',
         };
         this.handleToggleForm = this.handleToggleForm.bind(this);
         this.closeForm = this.closeForm.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.handleSort = this.handleSort.bind(this);
     }
 
     handleToggleForm(){
@@ -30,6 +33,14 @@ class App extends Component {
     handleSearch(value){
         this.setState({strSearch: value});
     }
+
+    handleSort(orderBy, orderDir){
+        this.setState({
+            orderBy: orderBy,
+            orderDir: orderDir
+        });
+    }
+
     render() {
         //console.log(this.state.items);
         //console.log(this.state.strSearch);
@@ -37,6 +48,9 @@ class App extends Component {
         let items = [];
         let elmForm = null;
         let search = this.state.strSearch;
+        let orderBy = this.state.orderBy;
+        let orderDir = this.state.orderDir;
+
         if(this.state.isShowForm){
             elmForm = <Form onClickCancel = {this.closeForm}/>
         }
@@ -53,8 +67,10 @@ class App extends Component {
         */
 
         items = filter(itemsOrigin, (item) => {
-            return includes(item.name, search);
+            return includes(item.name.toLowerCase(), search.toLowerCase());
         })
+
+        items = funcOrderBy(items, [orderBy], [orderDir]);
 
         return (
             <div>
@@ -64,9 +80,12 @@ class App extends Component {
                     {/* TITLE : END */}
                     {/* CONTROL (SEARCH + SORT + ADD) : START */}
                     <Control
+                        orderBy={orderBy}
+                        orderDir={orderDir}
                         onClickAdd={this.handleToggleForm}
                         isShowForm={this.state.isShowForm}
                         onClickSearchGo={this.handleSearch}
+                        onClickSort={this.handleSort}
                     />
                     {/* CONTROL (SEARCH + SORT + ADD) : END */}
                     {/* FORM : START */}
