@@ -17,6 +17,7 @@ class App extends Component {
             strSearch: '',
             orderBy: 'name',
             orderDir: 'asc',
+            itemSelected: null
         };
         this.handleToggleForm = this.handleToggleForm.bind(this);
         this.closeForm = this.closeForm.bind(this);
@@ -24,20 +25,33 @@ class App extends Component {
         this.handleSort = this.handleSort.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
     }
 
     handleSubmit(item){
         //console.log(item);
         let items = this.state.items;
-        items.push({
-            id : uuidv4(),
-            name : item.name,
-            level : +item.level,
-        });
+        if(item.id !== '') { //edit
+            //console.log("edit");
+            items.forEach((elm,key) => {
+                if(elm.id === item.id){
+                    items[key].name = item.name;
+                    items[key].level = +item.level;
+                }
+            })
+        } else { // add
+           //console.log("add");
+            items.push({
+                id: uuidv4(),
+                name: item.name,
+                level: +item.level,
+            });
+        }
         this.setState({
             items: items,
-            isShowForm: false
-        })
+            isShowForm: false,
+        });
+
     }
 
     handleDelete(id){
@@ -70,6 +84,14 @@ class App extends Component {
         });
     }
 
+    handleEdit(item){
+        //console.log(item);
+        this.setState({
+            itemSelected: item,
+            isShowForm: true
+        });
+    }
+
     render() {
         //console.log(this.state.items);
         //console.log(this.state.strSearch);
@@ -79,9 +101,10 @@ class App extends Component {
         let search = this.state.strSearch;
         let orderBy = this.state.orderBy;
         let orderDir = this.state.orderDir;
+        let itemSelected = this.state.itemSelected;
 
         if(this.state.isShowForm){
-            elmForm = <Form onClickSubmit={this.handleSubmit} onClickCancel = {this.closeForm}/>
+            elmForm = <Form itemSelected={itemSelected} onClickSubmit={this.handleSubmit} onClickCancel = {this.closeForm}/>
         }
 
         /*
@@ -123,6 +146,7 @@ class App extends Component {
                     {/* LIST : START */}
                     <List
                         onClickDelete={this.handleDelete}
+                        onClickEdit={this.handleEdit}
                         items = {items}/>
                     {/* LIST : END */}
                 </div>
