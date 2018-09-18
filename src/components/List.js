@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import Item from "./Item";
 
+// class component
+// function component: stateless component
 
 class List extends Component {
     constructor(props){

@@ -3,7 +3,7 @@ import Title from "./components/Title";
 import Control from "./components/Control";
 import Form from "./components/Form";
 import List from "./components/List";
-import tasks from "./mocks/tasks";
+//import tasks from "./mocks/tasks";
 import {filter, includes, orderBy as funcOrderBy, remove, reject} from "lodash";
 
 const uuidv4 = require('uuid/v4');
@@ -12,7 +12,7 @@ class App extends Component {
     constructor(props){
         super(props);
         this.state = {
-            items: tasks,
+            items: [],
             isShowForm: false,
             strSearch: '',
             orderBy: 'name',
@@ -28,8 +28,22 @@ class App extends Component {
         this.handleEdit = this.handleEdit.bind(this);
     }
 
+    componentDidMount(){
+        let itemsLocalStorage = JSON.stringify([]);
+        let keySetItem = 'task';
+        localStorage.setItem(keySetItem, itemsLocalStorage );
+       // let a = localStorage.getItem('task');
+       // console.log(a);
+        // sao torng localstorage of may trong ko vay, tại bị lỗi ở dòng này, bỏ dòng này là chạy dc, có dữ liệu trong local...
+        let items =  JSON.parse(localStorage.getItem("task")) || [];
+
+        this.setState({
+            items: items,
+        });
+    }
+
     handleSubmit(item){
-        console.log(123);
+        //console.log(123);
         let items = this.state.items;
         if(item.id !== '') { //edit
             //console.log("edit");
@@ -47,7 +61,7 @@ class App extends Component {
                 }
             }) */
         } else { // add
-           //console.log("add");
+           console.log("add");
             items.push({
                 id: uuidv4(),
                 name: item.name,
@@ -59,6 +73,8 @@ class App extends Component {
             isShowForm: false,
         });
 
+        localStorage.setItem("task", JSON.stringify(items));
+
     }
 
     handleDelete(id){
@@ -69,7 +85,8 @@ class App extends Component {
         });
         this.setState({
             items: items
-        })
+        });
+        localStorage.setItem('task', JSON.stringify(items));
     }
 
     handleToggleForm(){
