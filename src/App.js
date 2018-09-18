@@ -29,7 +29,7 @@ class App extends Component {
     }
 
     handleSubmit(item){
-        //console.log(item);
+        console.log(123);
         let items = this.state.items;
         if(item.id !== '') { //edit
             //console.log("edit");
