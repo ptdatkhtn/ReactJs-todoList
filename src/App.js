@@ -4,7 +4,7 @@ import Control from "./components/Control";
 import Form from "./components/Form";
 import List from "./components/List";
 import tasks from "./mocks/tasks";
-import {filter, includes, orderBy as funcOrderBy, remove} from "lodash";
+import {filter, includes, orderBy as funcOrderBy, remove, reject} from "lodash";
 
 const uuidv4 = require('uuid/v4');
 
@@ -33,12 +33,19 @@ class App extends Component {
         let items = this.state.items;
         if(item.id !== '') { //edit
             //console.log("edit");
+            items = reject(items, { id: item.id});
+            items.push({
+                id: item.id,
+                name: item.name,
+                level: +item.level
+            })
+            /*
             items.forEach((elm,key) => {
                 if(elm.id === item.id){
                     items[key].name = item.name;
                     items[key].level = +item.level;
                 }
-            })
+            }) */
         } else { // add
            //console.log("add");
             items.push({
@@ -66,7 +73,10 @@ class App extends Component {
     }
 
     handleToggleForm(){
-        this.setState({isShowForm: !this.state.isShowForm});
+        this.setState({
+            isShowForm: !this.state.isShowForm,
+            itemSelected: null,
+        });
     }
 
     closeForm(){
